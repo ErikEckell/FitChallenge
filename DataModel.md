@@ -1,6 +1,6 @@
 # FitChallenge – Basic Data Model
 
-![Data Model](DataModel.png)
+![Data Model](datamodel.png)
 
 ## Main Data Flow
 
