@@ -1,24 +1,7 @@
-# README
+# FitChallenge
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+FitChallenge is a web application built with Ruby on Rails that allows users to create, join, and track fitness or habit challenges.  
+The platform uses gamification features such as leaderboards, badges, and global statistics to encourage motivation and engagement.  
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Author
+*Erik Eckell Vasquez*
