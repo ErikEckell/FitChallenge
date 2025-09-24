@@ -1,0 +1,25 @@
+<h1>All Progress Entries</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Participation</th>
+      <th>Exercise</th>
+      <th>Date</th>
+      <th>Metric Value</th>
+      <th>Points</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @progress_entries.each do |pe| %>
+      <tr>
+        <td><%= pe.participation.user.name %> - <%= pe.participation.challenge.title %></td>
+        <td><%= pe.exercise.name %></td>
+        <td><%= pe.entry_date %></td>
+        <td><%= pe.metric_value %></td>
+        <td><%= pe.points %></td>
+        <td><%= link_to 'Show', progress_entry_path(pe), class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

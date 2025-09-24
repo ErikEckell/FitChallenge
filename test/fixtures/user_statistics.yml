@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  total_points: 1
+  total_distance: 1.5
+  total_reps: 1
+  total_minutes: 1
+  completed_challenges: 1
+  last_update: 2025-09-24 17:39:00
+
+two:
+  user: two
+  total_points: 1
+  total_distance: 1.5
+  total_reps: 1
+  total_minutes: 1
+  completed_challenges: 1
+  last_update: 2025-09-24 17:39:00

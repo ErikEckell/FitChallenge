@@ -1,0 +1,7 @@
+<h1><%= @challenge.title %></h1>
+<p><strong>Description:</strong> <%= @challenge.description %></p>
+<p><strong>Start Date:</strong> <%= @challenge.start_date %></p>
+<p><strong>End Date:</strong> <%= @challenge.end_date %></p>
+<p><strong>Creator:</strong> <%= @challenge.creator.name %></p>
+
+<%= link_to 'Back to Challenges', challenges_path, class: "btn btn-secondary" %>

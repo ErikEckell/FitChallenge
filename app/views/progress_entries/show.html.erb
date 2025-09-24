@@ -1,0 +1,9 @@
+<h1>Progress Entry Details</h1>
+<p><strong>User:</strong> <%= @progress_entry.participation.user.name %></p>
+<p><strong>Challenge:</strong> <%= @progress_entry.participation.challenge.title %></p>
+<p><strong>Exercise:</strong> <%= @progress_entry.exercise.name %></p>
+<p><strong>Date:</strong> <%= @progress_entry.entry_date %></p>
+<p><strong>Metric Value:</strong> <%= @progress_entry.metric_value %></p>
+<p><strong>Points:</strong> <%= @progress_entry.points %></p>
+
+<%= link_to 'Back to Progress Entries', progress_entries_path, class: "btn btn-secondary" %>

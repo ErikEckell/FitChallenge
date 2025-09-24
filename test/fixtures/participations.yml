@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  challenge: one
+  joined_at: 2025-09-24 17:38:26
+  total_points: 1
+  status: MyString
+
+two:
+  user: two
+  challenge: two
+  joined_at: 2025-09-24 17:38:26
+  total_points: 1
+  status: MyString

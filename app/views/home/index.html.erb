@@ -1,0 +1,108 @@
+<!-- app/views/home/index.html.erb -->
+
+<h1 class="mb-4 text-center">Welcome to FitChallenge</h1>
+
+<div class="row mb-5 justify-content-center">
+  <!-- Users Card -->
+  <div class="col-md-2 mb-3">
+    <div class="card text-center h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Users</h5>
+        <p class="card-text display-6"><%= @users_count %></p>
+        <%= link_to "View Users", users_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenges Card -->
+  <div class="col-md-2 mb-3">
+    <div class="card text-center h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Challenges</h5>
+        <p class="card-text display-6"><%= @challenges_count %></p>
+        <%= link_to "View Challenges", challenges_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Participations Card -->
+  <div class="col-md-2 mb-3">
+    <div class="card text-center h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Participations</h5>
+        <p class="card-text display-6"><%= @participations_count %></p>
+        <%= link_to "View Participations", participations_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Card -->
+  <div class="col-md-2 mb-3">
+    <div class="card text-center h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Exercises</h5>
+        <p class="card-text display-6"><%= @exercises_count %></p>
+        <%= link_to "View Exercises", exercises_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badges Card -->
+  <div class="col-md-2 mb-3">
+    <div class="card text-center h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Badges</h5>
+        <p class="card-text display-6"><%= @badges_count %></p>
+        <%= link_to "View Badges", badges_path, class: "btn btn-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="mb-3">Latest Challenges</h2>
+<table class="table table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>Title</th>
+      <th>Creator</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @latest_challenges.each do |challenge| %>
+      <tr>
+        <td><%= link_to challenge.title, challenge_path(challenge), class: "text-decoration-none" %></td>
+        <td><%= challenge.creator.name %></td>
+        <td><%= challenge.start_date %></td>
+        <td><%= challenge.end_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2 class="mt-5 mb-3">Latest Progress Entries</h2>
+<table class="table table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>User</th>
+      <th>Challenge</th>
+      <th>Exercise</th>
+      <th>Value</th>
+      <th>Points</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @latest_progress_entries.each do |entry| %>
+      <tr>
+        <td><%= entry.participation.user.name %></td>
+        <td><%= entry.participation.challenge.title %></td>
+        <td><%= entry.exercise.name %></td>
+        <td><%= entry.metric_value %> <%= entry.exercise.unit %></td>
+        <td><%= entry.points %></td>
+        <td><%= entry.entry_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

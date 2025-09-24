@@ -1,0 +1,23 @@
+<h1>All Challenges</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Creator</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @challenges.each do |challenge| %>
+      <tr>
+        <td><%= challenge.title %></td>
+        <td><%= challenge.start_date %></td>
+        <td><%= challenge.end_date %></td>
+        <td><%= challenge.creator.name %></td>
+        <td><%= link_to 'Show', challenge_path(challenge), class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

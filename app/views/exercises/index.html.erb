@@ -1,0 +1,21 @@
+<h1>All Exercises</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Unit</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exercises.each do |e| %>
+      <tr>
+        <td><%= e.name %></td>
+        <td><%= e.category %></td>
+        <td><%= e.unit %></td>
+        <td><%= link_to 'Show', exercise_path(e), class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

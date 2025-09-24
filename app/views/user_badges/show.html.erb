@@ -1,0 +1,6 @@
+<h1>User Badge Details</h1>
+<p><strong>User:</strong> <%= @user_badge.user.name %></p>
+<p><strong>Badge:</strong> <%= @user_badge.badge.name %></p>
+<p><strong>Awarded At:</strong> <%= @user_badge.awarded_at %></p>
+
+<%= link_to 'Back to User Badges', user_badges_path, class: "btn btn-secondary" %>

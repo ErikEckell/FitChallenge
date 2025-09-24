@@ -1,0 +1,21 @@
+<h1>All User Badges</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Badge</th>
+      <th>Awarded At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @user_badges.each do |ub| %>
+      <tr>
+        <td><%= ub.user.name %></td>
+        <td><%= ub.badge.name %></td>
+        <td><%= ub.awarded_at %></td>
+        <td><%= link_to 'Show', user_badge_path(ub), class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

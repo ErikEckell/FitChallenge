@@ -1,0 +1,21 @@
+<h1>All Badges</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Condition</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @badges.each do |b| %>
+      <tr>
+        <td><%= b.name %></td>
+        <td><%= b.description %></td>
+        <td><%= b.condition %></td>
+        <td><%= link_to 'Show', badge_path(b), class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
