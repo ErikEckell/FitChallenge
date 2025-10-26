@@ -1,0 +1,41 @@
+<%= form_with(model: participation, local: true) do |f| %>
+  <% if participation.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Errors:</h4>
+      <ul>
+        <% participation.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :user_id, "User" %>
+    <%= f.collection_select :user_id, User.all, :id, :name, { prompt: "Select User" }, class: "form-select", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :challenge_id, "Challenge" %>
+    <%= f.collection_select :challenge_id, Challenge.all, :id, :title, { prompt: "Select Challenge" }, class: "form-select", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :joined_at %>
+    <%= f.date_field :joined_at, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :total_points %>
+    <%= f.number_field :total_points, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :status %>
+    <%= f.select :status, ["active", "completed", "dropped"], { prompt: "Select Status" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

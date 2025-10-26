@@ -1,11 +1,15 @@
-<h1>All Challenges</h1>
+<h1>Challenges</h1>
+
+<% if can?(:create, Challenge) %>
+  <%= link_to "New Challenge", new_challenge_path, class: "btn btn-success mb-3" %>
+<% end %>
+
 <table class="table table-striped">
   <thead>
     <tr>
       <th>Title</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Creator</th>
+      <th>Description</th>
+      <th>Dates</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -13,10 +17,18 @@
     <% @challenges.each do |challenge| %>
       <tr>
         <td><%= challenge.title %></td>
-        <td><%= challenge.start_date %></td>
-        <td><%= challenge.end_date %></td>
-        <td><%= challenge.creator.name %></td>
-        <td><%= link_to 'Show', challenge_path(challenge), class: "btn btn-sm btn-primary" %></td>
+        <td><%= challenge.description %></td>
+        <td><%= challenge.start_date %> - <%= challenge.end_date %></td>
+        <td>
+          <%= link_to "Show", challenge_path(challenge), class: "btn btn-primary btn-sm" %>
+          <% if current_user.admin? || challenge.creator == current_user %>
+            <%= link_to "Edit", edit_challenge_path(challenge), class: "btn btn-warning btn-sm" %>
+            <%= button_to "Delete", challenge_path(challenge), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+          <% end %>
+          <% if current_user.role == "participant" && !challenge.participants.include?(current_user) %>
+            <%= button_to "Join", join_challenge_path(challenge), method: :post, class: "btn btn-success btn-sm" %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

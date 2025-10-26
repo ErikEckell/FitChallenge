@@ -1,5 +1,10 @@
-<h1>All Exercises</h1>
-<table class="table table-striped">
+<h1>Exercises</h1>
+
+<% if can? :create, Exercise %>
+  <%= link_to "New Exercise", new_exercise_path, class: "btn btn-success mb-3" %>
+<% end %>
+
+<table class="table table-striped table-hover align-middle">
   <thead>
     <tr>
       <th>Name</th>
@@ -9,12 +14,22 @@
     </tr>
   </thead>
   <tbody>
-    <% @exercises.each do |e| %>
+    <% @exercises.each do |exercise| %>
       <tr>
-        <td><%= e.name %></td>
-        <td><%= e.category %></td>
-        <td><%= e.unit %></td>
-        <td><%= link_to 'Show', exercise_path(e), class: "btn btn-sm btn-primary" %></td>
+        <td><%= exercise.name %></td>
+        <td><%= exercise.category %></td>
+        <td><%= exercise.unit %></td>
+        <td>
+          <%= link_to "Show", exercise_path(exercise), class: "btn btn-primary btn-sm" %>
+          <% if can? :update, exercise %>
+            <%= link_to "Edit", edit_exercise_path(exercise), class: "btn btn-warning btn-sm" %>
+          <% end %>
+          <% if can? :destroy, exercise %>
+            <%= button_to "Delete", exercise_path(exercise), method: :delete,
+                data: { confirm: "Are you sure?" },
+                class: "btn btn-danger btn-sm" %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

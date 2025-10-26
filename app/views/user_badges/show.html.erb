@@ -1,6 +1,10 @@
 <h1>User Badge Details</h1>
+
 <p><strong>User:</strong> <%= @user_badge.user.name %></p>
 <p><strong>Badge:</strong> <%= @user_badge.badge.name %></p>
 <p><strong>Awarded At:</strong> <%= @user_badge.awarded_at %></p>
 
-<%= link_to 'Back to User Badges', user_badges_path, class: "btn btn-secondary" %>
+<%= link_to "Back", user_badges_path, class: "btn btn-secondary" %>
+<% if can? :destroy, @user_badge %>
+  <%= button_to "Remove", user_badge_path(@user_badge), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+<% end %>

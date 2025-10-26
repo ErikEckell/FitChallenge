@@ -1,5 +1,6 @@
-<h1>All Progress Entries</h1>
-<table class="table table-striped">
+<h1>Progress Entries</h1>
+
+<table class="table table-striped table-hover align-middle">
   <thead>
     <tr>
       <th>Participation</th>
@@ -7,18 +8,18 @@
       <th>Date</th>
       <th>Metric Value</th>
       <th>Points</th>
-      <th>Actions</th>
+      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
-    <% @progress_entries.each do |pe| %>
+    <% @progress_entries.each do |entry| %>
       <tr>
-        <td><%= pe.participation.user.name %> - <%= pe.participation.challenge.title %></td>
-        <td><%= pe.exercise.name %></td>
-        <td><%= pe.entry_date %></td>
-        <td><%= pe.metric_value %></td>
-        <td><%= pe.points %></td>
-        <td><%= link_to 'Show', progress_entry_path(pe), class: "btn btn-sm btn-primary" %></td>
+        <td><%= entry.participation.challenge.title %></td>
+        <td><%= entry.exercise.name %></td>
+        <td><%= entry.entry_date %></td>
+        <td><%= entry.metric_value %></td>
+        <td><%= entry.points %></td>
+        <td><%= entry.notes %></td>
       </tr>
     <% end %>
   </tbody>

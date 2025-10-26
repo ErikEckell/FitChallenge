@@ -1,0 +1,31 @@
+<%= form_with(model: user_badge, local: true) do |f| %>
+  <% if user_badge.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Errors:</h4>
+      <ul>
+        <% user_badge.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :user_id, "User" %>
+    <%= f.collection_select :user_id, User.all, :id, :name, { prompt: "Select user" }, { class: "form-select", required: true } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :badge_id, "Badge" %>
+    <%= f.collection_select :badge_id, Badge.all, :id, :name, { prompt: "Select badge" }, { class: "form-select", required: true } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :awarded_at, "Awarded At" %>
+    <%= f.datetime_select :awarded_at, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

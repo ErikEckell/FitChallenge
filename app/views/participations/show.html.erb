@@ -1,8 +1,8 @@
 <h1>Participation Details</h1>
+
 <p><strong>User:</strong> <%= @participation.user.name %></p>
 <p><strong>Challenge:</strong> <%= @participation.challenge.title %></p>
-<p><strong>Joined At:</strong> <%= @participation.joined_at %></p>
-<p><strong>Total Points:</strong> <%= @participation.total_points %></p>
 <p><strong>Status:</strong> <%= @participation.status %></p>
+<p><strong>Total Points:</strong> <%= @participation.total_points %></p>
 
-<%= link_to 'Back to Participations', participations_path, class: "btn btn-secondary" %>
+<%= link_to "Back", participations_path, class: "btn btn-secondary" %>

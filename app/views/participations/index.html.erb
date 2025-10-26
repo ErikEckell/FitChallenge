@@ -1,12 +1,12 @@
-<h1>All Participations</h1>
-<table class="table table-striped">
+<h1>Participations</h1>
+
+<table class="table table-striped table-hover align-middle">
   <thead>
     <tr>
       <th>User</th>
       <th>Challenge</th>
-      <th>Joined At</th>
-      <th>Total Points</th>
       <th>Status</th>
+      <th>Total Points</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -15,10 +15,16 @@
       <tr>
         <td><%= p.user.name %></td>
         <td><%= p.challenge.title %></td>
-        <td><%= p.joined_at %></td>
-        <td><%= p.total_points %></td>
         <td><%= p.status %></td>
-        <td><%= link_to 'Show', participation_path(p), class: "btn btn-sm btn-primary" %></td>
+        <td><%= p.total_points %></td>
+        <td>
+          <%= link_to "Show", participation_path(p), class: "btn btn-primary btn-sm" %>
+          <% if can? :destroy, p %>
+            <%= button_to "Delete", participation_path(p), method: :delete,
+                data: { confirm: "Are you sure?" },
+                class: "btn btn-danger btn-sm" %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

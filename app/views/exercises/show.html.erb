@@ -1,5 +1,9 @@
 <h1><%= @exercise.name %></h1>
+
 <p><strong>Category:</strong> <%= @exercise.category %></p>
 <p><strong>Unit:</strong> <%= @exercise.unit %></p>
 
-<%= link_to 'Back to Exercises', exercises_path, class: "btn btn-secondary" %>
+<%= link_to "Back", exercises_path, class: "btn btn-secondary" %>
+<% if can? :update, @exercise %>
+  <%= link_to "Edit", edit_exercise_path(@exercise), class: "btn btn-warning" %>
+<% end %>

@@ -1,0 +1,30 @@
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-warning text-white">
+      <h2 class="mb-0">Edit Challenge</h2>
+    </div>
+    <div class="card-body">
+      <%= form_with(model: @challenge, local: true, class: "needs-validation") do |form| %>
+        <div class="mb-3">
+          <%= form.label :title, class: "form-label" %>
+          <%= form.text_field :title, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :description, class: "form-label" %>
+          <%= form.text_area :description, class: "form-control", rows: 3 %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :goal, class: "form-label" %>
+          <%= form.text_field :goal, class: "form-control" %>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <%= link_to "Back", challenges_path, class: "btn btn-secondary" %>
+          <%= form.submit "Update Challenge", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

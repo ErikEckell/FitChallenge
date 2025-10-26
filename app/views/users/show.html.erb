@@ -1,5 +1,61 @@
-<h1><%= @user.name %></h1>
+<h1><%= @user.name %>'s Profile</h1>
 <p><strong>Email:</strong> <%= @user.email %></p>
-<p><strong>Role:</strong> <%= @user.role %></p>
+<p><strong>Role:</strong> <%= @user.role.capitalize %></p>
 
-<%= link_to 'Back to Users', users_path, class: "btn btn-secondary" %>
+<hr>
+
+<h3>Statistics</h3>
+<% if @user.user_statistic %>
+  <ul class="list-group mb-3">
+    <li class="list-group-item"><strong>Total Points:</strong> <%= @user.user_statistic.total_points %></li>
+    <li class="list-group-item"><strong>Total Distance:</strong> <%= @user.user_statistic.total_distance %> km</li>
+    <li class="list-group-item"><strong>Total Reps:</strong> <%= @user.user_statistic.total_reps %></li>
+    <li class="list-group-item"><strong>Total Minutes:</strong> <%= @user.user_statistic.total_minutes %> min</li>
+    <li class="list-group-item"><strong>Completed Challenges:</strong> <%= @user.user_statistic.completed_challenges %></li>
+  </ul>
+<% else %>
+  <p>No statistics available.</p>
+<% end %>
+
+<hr>
+
+<h3>Participations</h3>
+<% if @user.participations.any? %>
+  <table class="table table-striped mb-3">
+    <thead>
+      <tr>
+        <th>Challenge</th>
+        <th>Status</th>
+        <th>Total Points</th>
+        <th>Joined At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @user.participations.each do |p| %>
+        <tr>
+          <td><%= link_to p.challenge.title, challenge_path(p.challenge) %></td>
+          <td><%= p.status.capitalize %></td>
+          <td><%= p.total_points %></td>
+          <td><%= p.joined_at.strftime("%Y-%m-%d") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No participations yet.</p>
+<% end %>
+
+<hr>
+
+<h3>Badges</h3>
+<% if @user.badges.any? %>
+  <ul class="list-group">
+    <% @user.badges.each do |badge| %>
+      <li class="list-group-item">
+        <strong><%= badge.name %></strong>: <%= badge.description %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No badges yet.</p>
+<% end %>

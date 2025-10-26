@@ -1,0 +1,46 @@
+<%= form_with(model: progress_entry, local: true) do |f| %>
+  <% if progress_entry.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Errors:</h4>
+      <ul>
+        <% progress_entry.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :participation_id, "User & Challenge" %>
+    <%= f.collection_select :participation_id, Participation.all, :id, ->(p) { "#{p.user.name} - #{p.challenge.title}" }, { prompt: "Select participation" }, { class: "form-select", required: true } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :exercise_id, "Exercise" %>
+    <%= f.collection_select :exercise_id, Exercise.all, :id, :name, { prompt: "Select exercise" }, { class: "form-select", required: true } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :metric_value, "Value" %>
+    <%= f.number_field :metric_value, class: "form-control", step: "any", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :points %>
+    <%= f.number_field :points, class: "form-control", step: 1, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :entry_date, "Date" %>
+    <%= f.date_field :entry_date, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :notes %>
+    <%= f.text_area :notes, class: "form-control", rows: 3 %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

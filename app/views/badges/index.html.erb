@@ -1,21 +1,46 @@
-<h1>All Badges</h1>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Condition</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @badges.each do |b| %>
-      <tr>
-        <td><%= b.name %></td>
-        <td><%= b.description %></td>
-        <td><%= b.condition %></td>
-        <td><%= link_to 'Show', badge_path(b), class: "btn btn-sm btn-primary" %></td>
-      </tr>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">🏅 Badges</h1>
+    <% if can? :create, Badge %>
+      <%= link_to "➕ New Badge", new_badge_path, class: "btn btn-success" %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+
+  <% if @badges.any? %>
+    <table class="table table-hover align-middle shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @badges.each do |badge| %>
+          <tr>
+            <td><strong><%= badge.name %></strong></td>
+            <td><%= badge.description %></td>
+            <td class="text-center">
+              <div class="btn-group" role="group">
+                <%= link_to "Show", badge_path(badge), class: "btn btn-outline-primary btn-sm" %>
+                <% if can? :update, badge %>
+                  <%= link_to "Edit", edit_badge_path(badge), class: "btn btn-outline-warning btn-sm" %>
+                <% end %>
+                <% if can? :destroy, badge %>
+                  <%= button_to "Delete", badge_path(badge),
+                                method: :delete,
+                                data: { confirm: "Are you sure?" },
+                                class: "btn btn-outline-danger btn-sm" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-info text-center mt-4">
+      No badges found yet.
+    </div>
+  <% end %>
+</div>

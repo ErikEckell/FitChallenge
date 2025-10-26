@@ -1,0 +1,23 @@
+<div class="card shadow-sm p-4 mt-3">
+  <h3 class="mb-3"><%= @badge.new_record? ? "New Badge" : "Edit Badge" %></h3>
+
+  <%= form_with(model: @badge, local: true) do |f| %>
+    <div class="mb-3">
+      <%= f.label :name, class: "form-label fw-semibold" %>
+      <%= f.text_field :name, class: "form-control", placeholder: "Enter badge name" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :description, class: "form-label fw-semibold" %>
+      <%= f.text_area :description, class: "form-control", rows: 2, placeholder: "Describe what this badge is for" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :condition, class: "form-label fw-semibold" %>
+      <%= f.text_field :condition, class: "form-control", placeholder: "e.g. total_distance >= 5 km" %>
+    </div>
+
+    <%= f.submit (@badge.new_record? ? "Create Badge" : "Update Badge"), class: "btn btn-success mt-2" %>
+    <%= link_to "Back", badges_path, class: "btn btn-secondary mt-2 ms-2" %>
+  <% end %>
+</div>

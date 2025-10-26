@@ -1,7 +1,10 @@
 <h1><%= @challenge.title %></h1>
+
 <p><strong>Description:</strong> <%= @challenge.description %></p>
 <p><strong>Start Date:</strong> <%= @challenge.start_date %></p>
 <p><strong>End Date:</strong> <%= @challenge.end_date %></p>
-<p><strong>Creator:</strong> <%= @challenge.creator.name %></p>
 
-<%= link_to 'Back to Challenges', challenges_path, class: "btn btn-secondary" %>
+<%= link_to "Back", challenges_path, class: "btn btn-secondary" %>
+<% if can? :update, @challenge %>
+  <%= link_to "Edit", edit_challenge_path(@challenge), class: "btn btn-warning" %>
+<% end %>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FitChallenge</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body>
+    <!-- Navbar simple -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      <div class="container">
+        <% if user_signed_in? %>
+          <%= link_to "FitChallenge", root_path, class: "navbar-brand" %>
+        <% else %>
+          <%= link_to "FitChallenge", new_user_session_path, class: "navbar-brand" %>
+        <% end %>
+      </div>
+    </nav>
+
+    <!-- Contenido centralizado -->
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+      <div class="col-md-5">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">FitChallenge</h3>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
