@@ -31,26 +31,34 @@ class ProgressEntriesController < ApplicationController
 
   def create
     @progress_entry = ProgressEntry.new(progress_entry_params)
+if @progress_entry.save
+  user = @progress_entry.participation.user
+  user.update_statistics!       # recalcula estadísticas
+  user.check_and_award_badges   # verifica si puede ganar badges
+  redirect_to @progress_entry, notice: "Progress entry created!"
+else
+  render :new
+end
 
-    if @progress_entry.save
-      update_related_points(@progress_entry)
-      redirect_to progress_entries_path, notice: "Progress entry created successfully!"
-    else
-      flash.now[:alert] = "Failed to create progress entry."
-      render :new, status: :unprocessable_entity
-    end
   end
+
 
 
   def edit; end
 
   def update
-    if @progress_entry.update(progress_entry_params)
-      redirect_to progress_entries_path, notice: "Progress entry updated successfully."
-    else
-      render :edit, status: :unprocessable_entity
-    end
+    @progress_entry = ProgressEntry.new(progress_entry_params)
+    if @progress_entry.save
+  user = @progress_entry.participation.user
+  user.update_statistics!       # recalcula estadísticas
+  user.check_and_award_badges   # verifica si puede ganar badges
+  redirect_to @progress_entry, notice: "Progress entry created!"
+else
+  render :new
+end
+
   end
+
 
   def destroy
     @progress_entry.destroy
