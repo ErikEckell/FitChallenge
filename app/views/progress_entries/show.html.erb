@@ -1,19 +1,31 @@
 <div class="container mt-5">
-  <% if @progress_entry %>
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-secondary text-white">
-        <h2 class="mb-0">Progress Entry</h2>
-      </div>
-      <div class="card-body">
-        <p><strong>User:</strong> <%= link_to @progress_entry.participation.user.name, user_path(@progress_entry.participation.user) %></p>
-        <p><strong>Challenge:</strong> <%= link_to @progress_entry.participation.challenge.title, challenge_path(@progress_entry.participation.challenge) %></p>
-        <p><strong>Exercise:</strong> <%= @progress_entry.exercise.name %></p>
-        <p><strong>Value:</strong> <%= @progress_entry.metric_value %> <%= @progress_entry.exercise.unit %></p>
-        <p><strong>Points:</strong> <%= @progress_entry.points %></p>
-        <p><strong>Date:</strong> <%= @progress_entry.entry_date.strftime("%d/%m/%Y") %></p>
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Progress Entry Details</h2>
+      <div>
+        <%= link_to "Back to Entries", progress_entries_path, class: "btn btn-light btn-sm me-2" %>
+        <% if current_user.admin? || current_user == @progress_entry.participation.user || current_user == @progress_entry.participation.challenge.creator %>
+          <%= link_to "Edit", edit_progress_entry_path(@progress_entry), class: "btn btn-warning btn-sm me-2" %>
+          <%= button_to "Delete", @progress_entry, method: :delete, data: { confirm: "Are you sure you want to delete this entry?" }, class: "btn btn-danger btn-sm" %>
+        <% end %>
       </div>
     </div>
-  <% else %>
-    <div class="alert alert-danger">Progress Entry not found.</div>
-  <% end %>
+
+    <div class="card-body">
+      <h4 class="mb-3"><%= @progress_entry.participation.challenge.title %></h4>
+
+      <ul class="list-group list-group-flush mb-4">
+        <li class="list-group-item"><strong>Exercise:</strong> <%= @progress_entry.exercise.name %></li>
+        <li class="list-group-item"><strong>Entry Date:</strong> <%= @progress_entry.entry_date.strftime("%d/%m/%Y") %></li>
+        <li class="list-group-item"><strong>Metric Value:</strong> <%= @progress_entry.metric_value %> <%= @progress_entry.exercise.unit %></li>
+        <li class="list-group-item"><strong>Points:</strong> <%= @progress_entry.points || "—" %></li>
+        <li class="list-group-item"><strong>Participant:</strong> <%= @progress_entry.participation.user.name %></li>
+      </ul>
+
+      <p class="text-muted small">
+        Created at: <%= @progress_entry.created_at.strftime("%d/%m/%Y %H:%M") %><br>
+        Last updated: <%= @progress_entry.updated_at.strftime("%d/%m/%Y %H:%M") %>
+      </p>
+    </div>
+  </div>
 </div>

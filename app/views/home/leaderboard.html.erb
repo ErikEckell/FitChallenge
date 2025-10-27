@@ -1,0 +1,69 @@
+<!-- app/views/home/leaderboard.html.erb -->
+<div class="container mt-5">
+  <h1 class="mb-4">Leaderboards</h1>
+
+  <!-- Top 5 Users - Total Points -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">Top 5 Users - Total Points</div>
+    <ul class="list-group list-group-flush">
+      <% @top_points_users.each do |u| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <%= u.name %>
+          <span><%= u.total_points_sum || 0 %> pts</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Top 5 Users - Completed Challenges -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-success text-white">Top 5 Users - Completed Challenges</div>
+    <ul class="list-group list-group-flush">
+      <% @top_challenges_users.each do |u| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <%= u.name %>
+          <span><%= u.completed_challenges_sum || 0 %> completed</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Top 5 Users - Badges Obtained -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-warning text-white">Top 5 Users - Badges Obtained</div>
+    <ul class="list-group list-group-flush">
+      <% @top_badges_users.each do |u| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <%= u.name %>
+          <span><%= u.badges_count || 0 %> badges</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Top 5 Users - Progress Entries -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-info text-white">Top 5 Users - Progress Entries</div>
+    <ul class="list-group list-group-flush">
+      <% @top_entries_users.each do |u| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <%= u.name %>
+          <span><%= u.entries_count || 0 %> entries</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Top 5 Creators - Challenges Created -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-secondary text-white">Top 5 Creators - Challenges Created</div>
+    <ul class="list-group list-group-flush">
+      <% @top_creators.each do |u| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <%= u.name %>
+          <span><%= u.challenges_count || 0 %> challenges</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

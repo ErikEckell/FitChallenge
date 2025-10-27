@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   resources :progress_entries
   resources :badges
   resources :user_badges
+  # Leaderboard
+  get "leaderboard", to: "home#leaderboard", as: :leaderboard
+
 
   # health check route
   get "up" => "rails/health#show", as: :rails_health_check

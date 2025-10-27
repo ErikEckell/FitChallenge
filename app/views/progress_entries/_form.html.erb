@@ -1,47 +1,60 @@
-<% if progress_entry.errors.any? %>
-  <div class="alert alert-danger">
-    <h5>Fix the following errors:</h5>
-    <ul>
-      <% progress_entry.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
+<%= form_with(model: @progress_entry, local: true) do |form| %>
+  <% if @progress_entry.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@progress_entry.errors.count, "error") %> prevented saving:</h4>
+      <ul>
+        <% @progress_entry.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :participation_id, "Participation" %>
+    <%= form.collection_select :participation_id, current_user.participations.includes(:challenge),
+        :id, ->(p) { p.challenge.title }, { prompt: "Select challenge" }, class: "form-select", id: "participation-select" %>
   </div>
+
+  <div class="mb-3">
+    <%= form.label :exercise_id, "Exercise" %>
+    <%= form.collection_select :exercise_id, Exercise.all, :id, :name, { prompt: "Select exercise" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :entry_date, "Entry Date" %>
+    <%= form.date_field :entry_date, class: "form-control", required: true, id: "entry-date" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :metric_value, "Metric Value" %>
+    <%= form.number_field :metric_value, class: "form-control", step: 0.1, required: true %>
+  </div>
+
+  <%= form.submit class: "btn btn-primary" %>
 <% end %>
 
-<%= form_with(model: progress_entry, local: true, class: "needs-validation") do |form| %>
-  <div class="mb-3">
-    <%= form.label :participation_id, "Participation", class: "form-label" %>
-    <%= form.collection_select :participation_id, Participation.all, :id, ->(p) { "#{p.user.name} - #{p.challenge.title}" }, { prompt: "Select participation" }, { class: "form-control" } %>
-  </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const participationSelect = document.getElementById("participation-select");
+    const entryDate = document.getElementById("entry-date");
 
-  <div class="mb-3">
-    <%= form.label :exercise_id, "Exercise", class: "form-label" %>
-    <%= form.collection_select :exercise_id, Exercise.all, :id, :name, { prompt: "Select exercise" }, { class: "form-control" } %>
-  </div>
+    participationSelect.addEventListener("change", () => {
+      const participationId = participationSelect.value;
 
-  <div class="mb-3">
-    <%= form.label :metric_value, "Value", class: "form-label" %>
-    <%= form.number_field :metric_value, step: 0.01, class: "form-control" %>
-  </div>
+      if (!participationId) {
+        entryDate.removeAttribute("min");
+        entryDate.removeAttribute("max");
+        return;
+      }
 
-  <div class="mb-3">
-    <%= form.label :points, class: "form-label" %>
-    <%= form.number_field :points, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :entry_date, class: "form-label" %>
-    <%= form.date_field :entry_date, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :notes, class: "form-label" %>
-    <%= form.text_area :notes, class: "form-control", rows: 2, placeholder: "Optional notes" %>
-  </div>
-
-  <div class="d-flex justify-content-between">
-    <%= link_to "Back", progress_entries_path, class: "btn btn-secondary" %>
-    <%= form.submit class: "btn btn-primary" %>
-  </div>
-<% end %>
+      // Fetch fechas del challenge (usamos endpoint simple)
+      fetch(`/participations/${participationId}.json`)
+        .then(response => response.json())
+        .then(data => {
+          entryDate.min = data.challenge_start;
+          entryDate.max = data.challenge_end;
+        });
+    });
+  });
+</script>
