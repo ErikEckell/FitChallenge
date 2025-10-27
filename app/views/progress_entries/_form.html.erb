@@ -18,7 +18,7 @@
 
   <div class="mb-3">
     <%= form.label :exercise_id, "Exercise" %>
-    <%= form.collection_select :exercise_id, Exercise.all, :id, :name, { prompt: "Select exercise" }, class: "form-select" %>
+    <%= form.collection_select :exercise_id, Exercise.all, :id, :name, { prompt: "Select exercise" }, class: "form-select", id: "exercise-select" %>
   </div>
 
   <div class="mb-3">
@@ -27,7 +27,7 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :metric_value, "Metric Value" %>
+    <%= form.label :metric_value, "Metric Value (<span id='unit-label'>–</span>)".html_safe %>
     <%= form.number_field :metric_value, class: "form-control", step: 0.1, required: true %>
   </div>
 
@@ -38,7 +38,21 @@
   document.addEventListener("DOMContentLoaded", function() {
     const participationSelect = document.getElementById("participation-select");
     const entryDate = document.getElementById("entry-date");
+    const exerciseSelect = document.getElementById("exercise-select");
+    const unitLabel = document.getElementById("unit-label");
 
+    // Mapeo de exercise_id -> unidad
+    const exerciseUnits = {};
+    <% Exercise.all.each do |ex| %>
+      exerciseUnits["<%= ex.id %>"] = "<%= ex.unit %>";
+    <% end %>
+
+    // Actualizar unidad al cambiar ejercicio
+    exerciseSelect.addEventListener("change", () => {
+      unitLabel.textContent = exerciseUnits[exerciseSelect.value] || "–";
+    });
+
+    // Actualizar rango de fechas al cambiar participación
     participationSelect.addEventListener("change", () => {
       const participationId = participationSelect.value;
 
@@ -48,7 +62,6 @@
         return;
       }
 
-      // Fetch fechas del challenge (usamos endpoint simple)
       fetch(`/participations/${participationId}.json`)
         .then(response => response.json())
         .then(data => {

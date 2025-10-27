@@ -4,8 +4,9 @@ class ProgressEntry < ApplicationRecord
 
   validates :entry_date, presence: true
   validates :metric_value, numericality: { greater_than_or_equal_to: 0 }
-
   validate :entry_date_within_challenge_range
+
+  after_create :update_points
 
   private
 
@@ -17,4 +18,10 @@ class ProgressEntry < ApplicationRecord
       errors.add(:entry_date, "must be within the challenge duration (#{challenge.start_date} to #{challenge.end_date})")
     end
   end
+
+  def update_points
+    # Si los puntos dependen de la métrica, puedes ajustar aquí la fórmula
+    self.update(points: metric_value.to_i)
+  end
 end
+

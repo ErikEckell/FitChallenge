@@ -21,8 +21,8 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :unit, class: "form-label" %>
-    <%= form.text_field :unit, class: "form-control", placeholder: "km, reps, minutes, etc." %>
+    <%= form.label :unit %>
+    <%= form.select :unit, options_for_select(["reps", "km", "minutes"], @exercise.unit), {}, class: "form-select" %>
   </div>
 
   <div class="d-flex justify-content-between">

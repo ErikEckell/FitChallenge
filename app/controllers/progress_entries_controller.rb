@@ -31,12 +31,16 @@ class ProgressEntriesController < ApplicationController
 
   def create
     @progress_entry = ProgressEntry.new(progress_entry_params)
+
     if @progress_entry.save
-      redirect_to progress_entries_path, notice: "Progress entry created successfully."
+      update_related_points(@progress_entry)
+      redirect_to progress_entries_path, notice: "Progress entry created successfully!"
     else
+      flash.now[:alert] = "Failed to create progress entry."
       render :new, status: :unprocessable_entity
     end
   end
+
 
   def edit; end
 
@@ -71,4 +75,23 @@ class ProgressEntriesController < ApplicationController
       redirect_to progress_entries_path, alert: "You are not authorized to delete this entry."
     end
   end
+
+  def update_related_points(entry)
+  participation = entry.participation
+  user = participation.user
+
+  # 🔹 1. Recalcular puntos totales de la participación
+  participation.update(total_points: participation.progress_entries.sum(:points))
+
+  # 🔹 2. Recalcular estadísticas del usuario
+  stats = user.user_statistic || user.create_user_statistic
+  stats.update(
+    total_points: user.participations.sum(:total_points),
+    total_distance: user.participations.joins(progress_entries: :exercise).where("exercises.unit = ?", "km").sum("progress_entries.metric_value"),
+    total_reps: user.participations.joins(progress_entries: :exercise).where("exercises.unit = ?", "reps").sum("progress_entries.metric_value"),
+    total_minutes: user.participations.joins(progress_entries: :exercise).where("exercises.unit = ?", "minutes").sum("progress_entries.metric_value"),
+    completed_challenges: user.participations.where(status: "completed").count,
+    last_update: Time.current
+  )
+end
 end

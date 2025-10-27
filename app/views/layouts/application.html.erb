@@ -30,6 +30,9 @@
 
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
+              <% if user_signed_in? %>
+                <li class="nav-item"><%= link_to "My Profile", user_path(current_user), class: "nav-link" %></li>
+              <% end %>
               <li class="nav-item"><%= link_to "Users", users_path, class: "nav-link" %></li>
               <li class="nav-item"><%= link_to "Challenges", challenges_path, class: "nav-link" %></li>
               <li class="nav-item"><%= link_to "Exercises", exercises_path, class: "nav-link" %></li>
