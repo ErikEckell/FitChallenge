@@ -9,15 +9,20 @@ class ProgressEntriesController < ApplicationController
   end
 
   def new
-    @participation = Participation.find(params[:participation_id])
-    @progress_entry = ProgressEntry.new
+    if params[:participation_id].present?
+      @participation = Participation.find(params[:participation_id])
+      @progress_entry = ProgressEntry.new
+    else
+      redirect_to participations_path, alert: "No participation specified for this entry."
+    end
   end
 
   def create
-    @progress_entry = ProgressEntry.new(progress_entry_params)
+    @participation = Participation.find(params[:participation_id])
+    @progress_entry = @participation.progress_entries.build(progress_entry_params)
+
     if @progress_entry.save
-      check_and_award_badges(@progress_entry.participation.user)
-      redirect_to @progress_entry.participation.challenge, notice: "Progress submitted!"
+      redirect_to @participation.challenge, notice: "Progress entry created successfully!"
     else
       render :new
     end

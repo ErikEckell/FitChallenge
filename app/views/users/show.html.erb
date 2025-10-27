@@ -1,61 +1,72 @@
-<h1><%= @user.name %>'s Profile</h1>
-<p><strong>Email:</strong> <%= @user.email %></p>
-<p><strong>Role:</strong> <%= @user.role.capitalize %></p>
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-4 mb-4">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0"><%= @user.name %> - Profile</h2>
+    </div>
+    <div class="card-body">
+      <p><strong>Email:</strong> <%= @user.email %></p>
+      <p><strong>Role:</strong> <%= @user.role.titleize %></p>
 
-<hr>
+      <h4 class="mt-4">Statistics</h4>
+      <% if @user.participations.any? %>
+        <% total_points = @user.participations.joins(:progress_entries).sum("progress_entries.points") %>
+        <% total_distance = @user.participations.joins(progress_entries: :exercise).where("exercises.unit = ?", "km").sum("progress_entries.metric_value") %>
+        <% total_reps = @user.participations.joins(progress_entries: :exercise).where("exercises.unit = ?", "reps").sum("progress_entries.metric_value") %>
+        <% total_minutes = @user.participations.joins(progress_entries: :exercise).where("exercises.unit = ?", "minutes").sum("progress_entries.metric_value") %>
+        <% completed_challenges = @user.participations.where(status: "completed").count %>
 
-<h3>Statistics</h3>
-<% if @user.user_statistic %>
-  <ul class="list-group mb-3">
-    <li class="list-group-item"><strong>Total Points:</strong> <%= @user.user_statistic.total_points %></li>
-    <li class="list-group-item"><strong>Total Distance:</strong> <%= @user.user_statistic.total_distance %> km</li>
-    <li class="list-group-item"><strong>Total Reps:</strong> <%= @user.user_statistic.total_reps %></li>
-    <li class="list-group-item"><strong>Total Minutes:</strong> <%= @user.user_statistic.total_minutes %> min</li>
-    <li class="list-group-item"><strong>Completed Challenges:</strong> <%= @user.user_statistic.completed_challenges %></li>
-  </ul>
-<% else %>
-  <p>No statistics available.</p>
-<% end %>
-
-<hr>
-
-<h3>Participations</h3>
-<% if @user.participations.any? %>
-  <table class="table table-striped mb-3">
-    <thead>
-      <tr>
-        <th>Challenge</th>
-        <th>Status</th>
-        <th>Total Points</th>
-        <th>Joined At</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @user.participations.each do |p| %>
-        <tr>
-          <td><%= link_to p.challenge.title, challenge_path(p.challenge) %></td>
-          <td><%= p.status.capitalize %></td>
-          <td><%= p.total_points %></td>
-          <td><%= p.joined_at.strftime("%Y-%m-%d") %></td>
-        </tr>
+        <ul class="list-group mb-3">
+          <li class="list-group-item"><strong>Total Points:</strong> <%= total_points %></li>
+          <li class="list-group-item"><strong>Total Distance:</strong> <%= total_distance %> km</li>
+          <li class="list-group-item"><strong>Total Reps:</strong> <%= total_reps %></li>
+          <li class="list-group-item"><strong>Completed Challenges:</strong> <%= completed_challenges %></li>
+        </ul>
+      <% else %>
+        <div class="alert alert-info">No statistics recorded yet.</div>
       <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>No participations yet.</p>
-<% end %>
 
-<hr>
 
-<h3>Badges</h3>
-<% if @user.badges.any? %>
-  <ul class="list-group">
-    <% @user.badges.each do |badge| %>
-      <li class="list-group-item">
-        <strong><%= badge.name %></strong>: <%= badge.description %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No badges yet.</p>
-<% end %>
+      <h4 class="mt-4">Participations</h4>
+      <% if @user.participations.any? %>
+        <table class="table table-striped table-hover shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>Challenge</th>
+              <th>Status</th>
+              <th>Points Earned</th>
+              <th>Joined At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user.participations.each do |p| %>
+              <tr>
+                <td><%= link_to p.challenge.title, challenge_path(p.challenge) %></td>
+                <td><%= p.status.titleize %></td>
+                <td>
+                  <%= p.progress_entries.sum(:points) %>  <!-- suma los puntos de todas las entradas -->
+                </td>
+                <td><%= p.joined_at.strftime("%d/%m/%Y") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="alert alert-info">This user is not participating in any challenges.</div>
+      <% end %>
+
+      <h4 class="mt-4">Badges</h4>
+      <% if @user.user_badges.any? %>
+        <ul class="list-group">
+          <% @user.user_badges.each do |ub| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <%= ub.badge.name %>
+              <span class="badge bg-success rounded-pill"><%= ub.awarded_at.strftime("%d/%m/%Y") %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="alert alert-info">No badges awarded yet.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

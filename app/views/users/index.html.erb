@@ -1,9 +1,6 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="mb-0">👥 Users</h1>
-    <% if can? :create, User %>
-      <%= link_to "➕ New User", new_user_path, class: "btn btn-success" %>
-    <% end %>
   </div>
 
   <% if @users.any? %>

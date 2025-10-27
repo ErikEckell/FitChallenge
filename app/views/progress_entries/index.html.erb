@@ -1,26 +1,40 @@
-<h1>Progress Entries</h1>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Progress Entries</h1>
+<%= link_to "New Progress Entry", new_progress_entry_path(participation_id: params[:participation_id]), class: "btn btn-primary btn-sm" %>
+  </div>
 
-<table class="table table-striped table-hover align-middle">
-  <thead>
-    <tr>
-      <th>Participation</th>
-      <th>Exercise</th>
-      <th>Date</th>
-      <th>Metric Value</th>
-      <th>Points</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @progress_entries.each do |entry| %>
-      <tr>
-        <td><%= entry.participation.challenge.title %></td>
-        <td><%= entry.exercise.name %></td>
-        <td><%= entry.entry_date %></td>
-        <td><%= entry.metric_value %></td>
-        <td><%= entry.points %></td>
-        <td><%= entry.notes %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <% if @progress_entries.any? %>
+    <table class="table table-striped table-hover shadow-sm">
+      <thead class="table-dark">
+        <tr>
+          <th>User</th>
+          <th>Challenge</th>
+          <th>Exercise</th>
+          <th>Value</th>
+          <th>Points</th>
+          <th>Date</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @progress_entries.each do |entry| %>
+          <tr>
+            <td><%= link_to entry.participation.user.name, user_path(entry.participation.user) %></td>
+            <td><%= link_to entry.participation.challenge.title, challenge_path(entry.participation.challenge) %></td>
+            <td><%= entry.exercise.name %></td>
+            <td><%= entry.metric_value %> <%= entry.exercise.unit %></td>
+            <td><%= entry.points %></td>
+            <td><%= entry.entry_date.strftime("%d/%m/%Y") %></td>
+            <td class="text-center">
+              <%= link_to "Show", progress_entry_path(entry), class: "btn btn-outline-primary btn-sm me-1" %>
+              <%= link_to "Delete", progress_entry_path(entry), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-info">No progress entries have been recorded yet.</div>
+  <% end %>
+</div>

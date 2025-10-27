@@ -1,30 +1,78 @@
-<div class="card shadow-sm p-4 mt-3">
-  <h3 class="mb-3"><%= @challenge.new_record? ? "New Challenge" : "Edit Challenge" %></h3>
+<%= form_with(model: challenge, local: true, class: "needs-validation", id: "challenge-form") do |form| %>
 
-  <%= form_with(model: @challenge, local: true) do |f| %>
-    <div class="mb-3">
-      <%= f.label :title, class: "form-label fw-semibold" %>
-      <%= f.text_field :title, class: "form-control", placeholder: "Enter challenge title" %>
+  <% if challenge.errors.any? %>
+    <div class="alert alert-danger">
+      <h5>There were errors saving the challenge:</h5>
+      <ul class="mb-0">
+        <% challenge.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
-
-    <div class="mb-3">
-      <%= f.label :description, class: "form-label fw-semibold" %>
-      <%= f.text_area :description, class: "form-control", rows: 3, placeholder: "Describe the challenge" %>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <%= f.label :start_date, class: "form-label fw-semibold" %>
-        <%= f.date_field :start_date, class: "form-control" %>
-      </div>
-
-      <div class="col-md-6 mb-3">
-        <%= f.label :end_date, class: "form-label fw-semibold" %>
-        <%= f.date_field :end_date, class: "form-control" %>
-      </div>
-    </div>
-
-    <%= f.submit (@challenge.new_record? ? "Create Challenge" : "Update Challenge"), class: "btn btn-success mt-2" %>
-    <%= link_to "Back", challenges_path, class: "btn btn-secondary mt-2 ms-2" %>
   <% end %>
-</div>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", rows: 3 %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :start_date, class: "form-label" %>
+    <%= form.date_field :start_date, class: "form-control", required: true, min: Date.today %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :end_date, class: "form-label" %>
+    <%= form.date_field :end_date, class: "form-control", required: true, min: Date.today %>
+    <div class="invalid-feedback" id="end-date-error" style="display:none;">
+      End date cannot be before start date
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <%= link_to "Back", challenges_path, class: "btn btn-secondary" %>
+    <%= form.submit "Save Challenge", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const startDateField = document.getElementById("challenge_start_date");
+  const endDateField = document.getElementById("challenge_end_date");
+  const endDateError = document.getElementById("end-date-error");
+
+  // Ajusta el mínimo de end_date automáticamente cuando se selecciona start_date
+  startDateField.addEventListener("change", function() {
+    const startDate = new Date(startDateField.value);
+    endDateField.min = startDate.toISOString().split("T")[0];
+
+    // Si la fecha de fin actual es anterior a la nueva fecha de inicio, la ajusta automáticamente
+    if (new Date(endDateField.value) < startDate) {
+      endDateField.value = startDateField.value;
+      endDateError.style.display = "none";
+      endDateField.classList.remove("is-invalid");
+    }
+  });
+
+  // Validación final al enviar
+  const form = document.getElementById("challenge-form");
+  form.addEventListener("submit", function(event) {
+    const startDate = new Date(startDateField.value);
+    const endDate = new Date(endDateField.value);
+
+    if (endDate < startDate) {
+      event.preventDefault();
+      endDateField.classList.add("is-invalid");
+      endDateError.style.display = "block";
+    } else {
+      endDateField.classList.remove("is-invalid");
+      endDateError.style.display = "none";
+    }
+  });
+});
+</script>

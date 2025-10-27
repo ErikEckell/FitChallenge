@@ -1,9 +1,45 @@
-<h1><%= @exercise.name %></h1>
+<div class="container mt-5">
+  <% if @exercise %>
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0"><%= @exercise.name %></h2>
+      </div>
+      <div class="card-body">
+        <p><strong>Category:</strong> <%= @exercise.category %></p>
+        <p><strong>Unit:</strong> <%= @exercise.unit %></p>
+      </div>
+    </div>
 
-<p><strong>Category:</strong> <%= @exercise.category %></p>
-<p><strong>Unit:</strong> <%= @exercise.unit %></p>
-
-<%= link_to "Back", exercises_path, class: "btn btn-secondary" %>
-<% if can? :update, @exercise %>
-  <%= link_to "Edit", edit_exercise_path(@exercise), class: "btn btn-warning" %>
-<% end %>
+    <h4 class="mb-3">Progress Entries for this Exercise</h4>
+    <% if @exercise.progress_entries.any? %>
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>User</th>
+            <th>Challenge</th>
+            <th>Value</th>
+            <th>Points</th>
+            <th>Date</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @exercise.progress_entries.each do |entry| %>
+            <tr>
+              <td><%= link_to entry.participation.user.name, user_path(entry.participation.user) %></td>
+              <td><%= link_to entry.participation.challenge.title, challenge_path(entry.participation.challenge) %></td>
+              <td><%= entry.metric_value %> <%= @exercise.unit %></td>
+              <td><%= entry.points %></td>
+              <td><%= entry.entry_date.strftime("%d/%m/%Y") %></td>
+              <td><%= entry.notes %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="alert alert-info">No progress entries recorded for this exercise yet.</div>
+    <% end %>
+  <% else %>
+    <div class="alert alert-danger">Exercise not found.</div>
+  <% end %>
+</div>

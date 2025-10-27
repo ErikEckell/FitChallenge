@@ -15,7 +15,7 @@ class ChallengesController < ApplicationController
   end
 
   def create
-    @challenge = current_user.created_challenges.build(challenge_params)
+    @challenge = current_user.challenges.build(challenge_params)
     if @challenge.save
       redirect_to @challenge, notice: "Challenge created successfully!"
     else
@@ -60,8 +60,11 @@ class ChallengesController < ApplicationController
   end
 
   def authorize_creator_or_admin!
-    unless current_user.admin? || (@challenge && @challenge.creator == current_user) || action_name == "new" || action_name == "create"
-      redirect_to challenges_path, alert: "You are not authorized."
+    if action_name.in?(%w[new create])
+      redirect_to challenges_path, alert: "You are not authorized." unless current_user.admin? || current_user.creator?
+    else
+      redirect_to challenges_path, alert: "You are not authorized." unless current_user.admin? || @challenge.creator == current_user
     end
   end
+
 end

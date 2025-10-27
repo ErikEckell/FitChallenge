@@ -1,10 +1,45 @@
-<h1><%= @challenge.title %></h1>
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-4 mb-4">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0"><%= @challenge.title %></h2>
+    </div>
+    <div class="card-body">
+      <p><strong>Description:</strong> <%= @challenge.description %></p>
+      <p><strong>Start Date:</strong> <%= @challenge.start_date %></p>
+      <p><strong>End Date:</strong> <%= @challenge.end_date %></p>
+      <p><strong>Creator:</strong> <%= @challenge.creator.name %></p>
 
-<p><strong>Description:</strong> <%= @challenge.description %></p>
-<p><strong>Start Date:</strong> <%= @challenge.start_date %></p>
-<p><strong>End Date:</strong> <%= @challenge.end_date %></p>
+      <h4 class="mt-4">Participations</h4>
+      <% if @challenge.participations.any? %>
+        <table class="table table-striped table-hover shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>User</th>
+              <th>Status</th>
+              <th>Points Earned</th>
+              <th>Joined At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @challenge.participations.each do |p| %>
+              <% participant_points = p.progress_entries.sum(:points) %>
+              <tr>
+                <td><%= link_to p.user.name, user_path(p.user) %></td>
+                <td><%= p.status.titleize %></td>
+                <td><%= participant_points %></td>
+                <td><%= p.joined_at.strftime("%d/%m/%Y") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
 
-<%= link_to "Back", challenges_path, class: "btn btn-secondary" %>
-<% if can? :update, @challenge %>
-  <%= link_to "Edit", edit_challenge_path(@challenge), class: "btn btn-warning" %>
-<% end %>
+        <% total_challenge_points = @challenge.participations.joins(:progress_entries).sum("progress_entries.points") %>
+        <div class="alert alert-info mt-3">
+          <strong>Total Points in Challenge:</strong> <%= total_challenge_points %>
+        </div>
+      <% else %>
+        <div class="alert alert-info">No participants yet for this challenge.</div>
+      <% end %>
+    </div>
+  </div>
+</div>
