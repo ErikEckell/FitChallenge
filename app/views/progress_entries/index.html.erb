@@ -32,7 +32,6 @@
               <%= link_to "Show", progress_entry_path(entry), class: "btn btn-primary btn-sm" %>
 
               <% if current_user.admin? || current_user == entry.participation.user || current_user == entry.participation.challenge.creator %>
-                <%= link_to "Edit", edit_progress_entry_path(entry), class: "btn btn-warning btn-sm" %>
                 <%= button_to "Delete", entry, method: :delete, data: { confirm: "Are you sure you want to delete this entry?" }, class: "btn btn-danger btn-sm" %>
               <% end %>
             </td>
