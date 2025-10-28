@@ -38,8 +38,6 @@ The platform defines **three main user roles**, each with specific permissions a
 - Authorization is handled through **CanCanCan**:
   - Access is restricted based on the user’s role
   - Unauthorized access attempts show a friendly error message
-- The **root page** redirects to the **login page** by default
-- Once logged in, users are redirected to the **Home Dashboard**
 
 ---
 
@@ -192,14 +190,6 @@ db/
 ✅ Leaderboards and user statistics  
 ✅ Modern Bootstrap-based UI  
 ✅ Comprehensive data seeding  
-
----
-
-## 🧩 Future Improvements
-- Add charts for progress visualization  
-- Enable challenge invitations between users  
-- Add image upload for user avatars and badges  
-- Include an API endpoint for mobile integration  
 
 ---
 
