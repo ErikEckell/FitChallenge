@@ -160,8 +160,8 @@ Go to:
 
 | Role | Email | Password |
 |------|--------|-----------|
-| Admin | admin@example.com | 123456 |
-| Creator | creator@example.com | 123456 |
+| Admin | carol@example.com | 123456 |
+| Creator | bob@example.com | 123456 |
 | User | participant3@example.com | 123456 |
 
 ---
